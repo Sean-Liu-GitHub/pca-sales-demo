@@ -65,5 +65,26 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  consumer:
+    build: ./consumer
+    container_name: consumer
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_TOPIC: policy.sales.raw
+      KAFKA_GROUP_ID: policy-consumer-group
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: pca_sales
+      POSTGRES_USER: pca
+      POSTGRES_PASSWORD: pca_secret
+    volumes:
+      - ./producer/schema.py:/app/producer/schema.py:ro
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    
 volumes:
   pgdata:
