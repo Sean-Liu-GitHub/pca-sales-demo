@@ -85,6 +85,21 @@ services:
       postgres:
         condition: service_healthy
     restart: unless-stopped
+
+  dbt:
+    build: ./dbt
+    container_name: dbt
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: pca_sales
+      POSTGRES_USER: pca
+      POSTGRES_PASSWORD: pca_secret
+      DBT_RUN_INTERVAL: "60"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
     
 volumes:
   pgdata:
