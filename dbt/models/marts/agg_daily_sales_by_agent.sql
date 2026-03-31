@@ -8,7 +8,7 @@ with daily_sales_by_agent as (
     from {{ ref('stg_policy_sales') }} s
     join {{ ref('dim_agents') }} a
         on s.agent_id = a.agent_id
-    group by 1, 2
+    group by 1, 2, 3
 )
 
 select * from daily_sales_by_agent
