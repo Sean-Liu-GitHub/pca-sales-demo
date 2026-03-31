@@ -1,0 +1,11 @@
+product_id,product_code,product_type,product_name,category
+P-001,LIFE-TERM-10,term_life,10-Year Term Life,protection
+P-002,LIFE-TERM-20,term_life,20-Year Term Life,protection
+P-003,LIFE-WHOLE-99,whole_life,Whole Life Legacy,protection
+P-004,LIFE-ENDOW-15,endowment,15-Year Endowment,savings
+P-005,LIFE-ENDOW-20,endowment,20-Year Endowment,savings
+P-006,LIFE-ILP-GROWTH,investment_linked,Growth Fund ILP,investment
+P-007,LIFE-ILP-BALANCED,investment_linked,Balanced Fund ILP,investment
+P-008,HEALTH-BASIC,health,Basic Health Plan,health
+P-009,HEALTH-PREMIUM,health,Premium Health Plan,health
+P-010,ACC-PERSONAL,accident,Personal Accident Cover,protection

@@ -1,0 +1,12 @@
+pca_sales_demo:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('POSTGRES_HOST', 'postgres') }}"
+      port: 5432
+      user: "{{ env_var('POSTGRES_USER', 'pca') }}"
+      password: "{{ env_var('POSTGRES_PASSWORD', 'pca_secret') }}"
+      dbname: "{{ env_var('POSTGRES_DB', 'pca_sales') }}"
+      schema: public
+      threads: 2

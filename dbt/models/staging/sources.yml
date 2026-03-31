@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: policy_sales
+        description: "Raw policy_sold events ingested from Kafka by the consumer."
+        columns:
+          - name: event_id
+            description: "Unique event identifier (UUID)."
+            tests:
+              - unique
+              - not_null

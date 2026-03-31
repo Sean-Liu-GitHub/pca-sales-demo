@@ -1,0 +1,21 @@
+agent_id,agent_name,team,branch,seniority_tier
+A-001,Chen Wei-Lin,Alpha,Taipei Main,senior
+A-002,Lin Mei-Hui,Alpha,Taipei Main,senior
+A-003,Wang Jun-Kai,Alpha,Taipei Main,mid
+A-004,Zhang Yu-Ting,Alpha,Taipei Main,junior
+A-005,Liu Xin-Yi,Bravo,Banqiao,senior
+A-006,Huang Jia-Wen,Bravo,Banqiao,mid
+A-007,Wu Zhi-Hao,Bravo,Banqiao,mid
+A-008,Yang Shu-Fen,Bravo,Banqiao,junior
+A-009,Xu Ming-Zhe,Charlie,Taichung,senior
+A-010,Cai Ya-Wen,Charlie,Taichung,mid
+A-011,Zheng Hao-Ran,Charlie,Taichung,mid
+A-012,Xie Pei-Shan,Charlie,Taichung,junior
+A-013,Guo Jian-Hong,Delta,Tainan,senior
+A-014,Liao Shu-Qi,Delta,Tainan,mid
+A-015,Song Yu-Chen,Delta,Tainan,junior
+A-016,Zeng Kai-Xuan,Echo,Kaohsiung,senior
+A-017,Pan Li-Wen,Echo,Kaohsiung,mid
+A-018,Ye Cheng-En,Echo,Kaohsiung,mid
+A-019,Lu Yi-Xuan,Echo,Kaohsiung,junior
+A-020,Shi Wen-Jie,Echo,Kaohsiung,junior
