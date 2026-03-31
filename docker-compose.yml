@@ -53,5 +53,17 @@ services:
       timeout: 3s
       retries: 5
 
+  producer:
+    build: ./producer
+    container_name: producer
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_TOPIC: policy.sales.raw
+      PUBLISH_INTERVAL_SEC: "2"
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   pgdata:
