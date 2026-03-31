@@ -31,13 +31,13 @@ PG_PASSWORD = os.getenv("POSTGRES_PASSWORD", "pca_secret")
 
 INSERT_SQL = """
     INSERT INTO raw.policy_sales (
-        event_id, event_type, event_ts, policy_id, agent_id,
-        product_code, product_type, region, channel,
-        premium_amount, sum_assured, customer_age_band, payment_frequency
+        event_id, event_ts, policy_id, agent_id,
+        product_id, region_id, channel,
+        premium_amount, sum_assured, payment_frequency
     ) VALUES (
-        %(event_id)s, %(event_type)s, %(event_ts)s, %(policy_id)s, %(agent_id)s,
-        %(product_code)s, %(product_type)s, %(region)s, %(channel)s,
-        %(premium_amount)s, %(sum_assured)s, %(customer_age_band)s, %(payment_frequency)s
+        %(event_id)s, %(event_ts)s, %(policy_id)s, %(agent_id)s,
+        %(product_id)s, %(region_id)s, %(channel)s,
+        %(premium_amount)s, %(sum_assured)s, %(payment_frequency)s
     )
     ON CONFLICT (event_id) DO NOTHING;
 """
@@ -84,17 +84,14 @@ def write_to_postgres(conn, event: PolicySoldEvent):
         with conn.cursor() as cur:
             cur.execute(INSERT_SQL, {
                 "event_id": str(event.event_id),
-                "event_type": event.event_type,
                 "event_ts": event.event_ts.isoformat(),
                 "policy_id": str(event.policy_id),
                 "agent_id": event.agent_id,
-                "product_code": event.product_code,
-                "product_type": event.product_type,
-                "region": event.region,
+                "product_id": event.product_id,
+                "region_id": event.region_id,
                 "channel": event.channel,
                 "premium_amount": event.premium_amount,
                 "sum_assured": event.sum_assured,
-                "customer_age_band": event.customer_age_band,
                 "payment_frequency": event.payment_frequency,
             })
     except psycopg2.Error as e:
@@ -132,7 +129,7 @@ def run():
                 "Ingested event %s — agent=%s product=%s premium=%d",
                 event.event_id,
                 event.agent_id,
-                event.product_code,
+                event.product_id,
                 event.premium_amount,
             )
 
