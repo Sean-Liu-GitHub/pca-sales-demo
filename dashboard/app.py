@@ -202,5 +202,5 @@ def live_dashboard():
     else:
         st.info("Waiting for regional data...")
 
-# --- Run the fragment ---
+
 live_dashboard()
