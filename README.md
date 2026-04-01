@@ -38,7 +38,7 @@ auto-refreshes                                      ingested_at + event data
 ### Run
 
 ```bash
-git clone https://github.com/Sean-Liu-GitHub/pca-sales-demo
+git clone https://github.com/Sean-Liu-GitHub/pca-sales-demo.git
 cd pca-sales-demo
 cp .env.example .env
 docker compose up -d --build
