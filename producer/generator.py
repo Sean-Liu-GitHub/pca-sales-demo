@@ -4,11 +4,11 @@ import random
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from faker import Faker
+
 
 from schema import PolicySoldEvent
 
-fake = Faker()
+
 
 # --- Reference data (must match dbt seed CSVs) ---
 

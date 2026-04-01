@@ -1,3 +1,2 @@
 confluent-kafka==2.13.2
-faker==40.11.1
 pydantic==2.11.1
