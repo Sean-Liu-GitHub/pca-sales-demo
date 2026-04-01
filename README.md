@@ -12,8 +12,8 @@ every 2 seconds         └────────────────┘
                                                         │
                                                         ▼
 Dashboard (Streamlit)      dbt (every 60s)         PostgreSQL 18
-Reads from marts,     ◄── raw → staging → marts ◄── raw.policy_sales
-auto-refreshes                                      ingested_at + event data
+Reads from marts      ◄── raw → staging → marts ◄── raw.policy_sales
+                                                    ingested_at + event data
 ```
 
 ## Tech Stack
