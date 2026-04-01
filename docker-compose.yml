@@ -100,6 +100,22 @@ services:
       postgres:
         condition: service_healthy
     restart: unless-stopped
+
+  dashboard:
+    build: ./dashboard
+    container_name: dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: pca_sales
+      POSTGRES_USER: pca
+      POSTGRES_PASSWORD: pca_secret
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
     
 volumes:
   pgdata:
