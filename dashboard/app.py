@@ -1,7 +1,7 @@
 """PCA Life Insurance — Real-Time Policy Sales Dashboard."""
 
 import os
-from datetime import timedelta
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 import plotly.express as px
@@ -39,80 +39,35 @@ st.title("PCA Life Insurance — Sales Dashboard")
 st.caption("Real-time policy sales performance powered by Kafka + dbt + PostgreSQL")
 
 # --- Auto-refresh ---
-st.sidebar.markdown("Auto-refresh every 60 seconds")
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Data pipeline**")
 st.sidebar.markdown("Producer → Kafka → Consumer → PostgreSQL → dbt → Dashboard")
 
-@st.fragment(run_every=timedelta(seconds=10))
-def live_dashboard():
-    from datetime import datetime, timezone
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
-    st.caption(f"Last refreshed: {now}")
 
+def live_dashboard():
     # --- KPI Section ---
     st.header("Today's performance")
 
     kpi_sql = """
         select
-            coalesce(sum(premium_amount), 0) as total_premium,
-            coalesce(count(*), 0) as total_policies,
-            coalesce(avg(premium_amount), 0)::integer as avg_premium,
-            count(distinct agent_id) as active_agents
-        from staging.stg_policy_sales
+            coalesce(total_premium, 0) as total_premium,
+            coalesce(total_policies, 0) as total_policies,
+            coalesce(avg_premium, 0)::integer as avg_premium,
+            coalesce(active_agents, 0) as active_agents,
+            last_updated
+        from marts.agg_daily_sales
         where date_id = current_date;
     """
     kpi = run_query(kpi_sql)
 
     if not kpi.empty:
+        tw_time = kpi['last_updated'].iloc[0].astimezone(ZoneInfo("Asia/Taipei"))
+        st.caption(f"Last refreshed: {tw_time.strftime('%Y-%m-%d %H:%M:%S')}")
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("Total Premium (TWD)", f"{int(kpi['total_premium'].iloc[0]):,}")
         col2.metric("Policies Sold", int(kpi['total_policies'].iloc[0]))
         col3.metric("Avg Premium (TWD)", f"{int(kpi['avg_premium'].iloc[0]):,}")
         col4.metric("Active Agents", int(kpi['active_agents'].iloc[0]))
-
-
-    # # --- Today vs Yesterday ---
-    # st.header("Today vs yesterday")
-
-    # compare_sql = """
-    #     with today as (
-    #         select
-    #             count(*) as policies,
-    #             coalesce(sum(premium_amount), 0) as premium
-    #         from staging.stg_policy_sales
-    #         where date_id = current_date
-    #     ),
-    #     yesterday as (
-    #         select
-    #             count(*) as policies,
-    #             coalesce(sum(premium_amount), 0) as premium
-    #         from staging.stg_policy_sales
-    #         where date_id = current_date - 1
-    #     )
-    #     select
-    #         today.policies as today_policies,
-    #         today.premium as today_premium,
-    #         yesterday.policies as yday_policies,
-    #         yesterday.premium as yday_premium
-    #     from today, yesterday;
-    # """
-    # comp = run_query(compare_sql)
-
-    # if not comp.empty:
-    #     row = comp.iloc[0]
-    #     col1, col2 = st.columns(2)
-
-    #     yday_policies = int(row['yday_policies'])
-    #     today_policies = int(row['today_policies'])
-    #     policy_delta = today_policies - yday_policies if yday_policies > 0 else None
-    #     col1.metric("Policies sold", today_policies, delta=policy_delta)
-
-    #     yday_premium = int(row['yday_premium'])
-    #     today_premium = int(row['today_premium'])
-    #     premium_delta = today_premium - yday_premium if yday_premium > 0 else None
-    #     col2.metric("Premium written (TWD)", f"{today_premium:,}", delta=f"{premium_delta:,}" if premium_delta else None)
-
 
     # # --- Charts row ---
     chart_col1, chart_col2 = st.columns(2)
@@ -132,6 +87,7 @@ def live_dashboard():
         """
         hourly = run_query(hourly_sql)
         if not hourly.empty:
+            hourly['hour_ts'] = hourly['hour_ts'].dt.tz_convert(ZoneInfo("Asia/Taipei"))
             fig = px.bar(
                 hourly,
                 x="hour_ts",
