@@ -6,9 +6,9 @@ A containerized pub/sub system that simulates real-time insurance policy sales, 
 
 ```
 Producer (Python)          Kafka 4.2.0            Consumer (Python)
-Faker generates         ┌────────────────┐       Validates with Pydantic,
-policy_sold events  ──► │policy.sales.raw│ ──►   writes to PostgreSQL
-every 2 seconds         └────────────────┘
+policy_sold events      ┌────────────────┐       Validates with Pydantic,
+every 2 seconds     ──► │policy.sales.raw│ ──►   writes to PostgreSQL
+                        └────────────────┘
                                                         │
                                                         ▼
 Dashboard (Streamlit)      dbt (every 60s)         PostgreSQL 18
